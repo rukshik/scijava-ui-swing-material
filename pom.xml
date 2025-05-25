@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>scijava-ui-swing</artifactId>
-	<version>1.0.4-SNAPSHOT</version>
+	<version>1.0.4</version>
 
 	<name>SciJava UI: Swing</name>
 	<description>SciJava user interface components for Java Swing.</description>
@@ -119,6 +119,10 @@
 			<id>scijava.public</id>
 			<url>https://maven.scijava.org/content/groups/public</url>
 		</repository>
+		<repository>
+      		<id>jitpack.io</id>
+      		<url>https://jitpack.io</url>
+    	</repository>
 	</repositories>
 
 	<dependencies>
@@ -160,6 +164,11 @@
 		<dependency>
 			<groupId>com.formdev</groupId>
 			<artifactId>flatlaf</artifactId>
+		</dependency>
+		<dependency>
+ 		<groupId>io.github.vincenzopalazzo</groupId>
+			<artifactId>material-ui-swing</artifactId>
+			<version>1.1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.sbridges.object-inspector</groupId>

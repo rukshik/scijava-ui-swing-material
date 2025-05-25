@@ -43,7 +43,7 @@ import java.util.function.Supplier;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
+import mdlaf.MaterialLookAndFeel;
 
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
@@ -109,39 +109,46 @@ public class SwingLookAndFeelService extends AbstractService implements
 	public void setLookAndFeel(final String lookAndFeel) {
 		if (factories == null) initFactories();
 
-		if (factories.containsKey(lookAndFeel)) {
-			// This L+F has a dedicated factory.
-			final LookAndFeel laf = factories.get(lookAndFeel).get();
-			try {
-				UIManager.setLookAndFeel(laf);
-			}
-			catch (final UnsupportedLookAndFeelException exc) {
-				attemptToRecover();
-				throw new IllegalArgumentException(//
-					"Invalid look and feel: " + lookAndFeel, exc);
-			}
-		}
-		else {
-			// No dedicated factory; check for a registered L+F with a matching name.
-			final LookAndFeelInfo info = getLookAndFeel(lookAndFeel);
+		// if (factories.containsKey(lookAndFeel)) {
+		// 	// This L+F has a dedicated factory.
+		// 	final LookAndFeel laf = factories.get(lookAndFeel).get();
+		// 	try {
+		// 		UIManager.setLookAndFeel(laf);
+		// 	}
+		// 	catch (final UnsupportedLookAndFeelException exc) {
+		// 		attemptToRecover();
+		// 		throw new IllegalArgumentException(//
+		// 			"Invalid look and feel: " + lookAndFeel, exc);
+		// 	}
+		// }
+		// else {
+		// 	// No dedicated factory; check for a registered L+F with a matching name.
+		// 	final LookAndFeelInfo info = getLookAndFeel(lookAndFeel);
 
-			// If a L+F was found, use it; otherwise assume the argument is a class.
-			final String className = info == null ? lookAndFeel : info.getClassName();
+		// 	// If a L+F was found, use it; otherwise assume the argument is a class.
+		// 	final String className = info == null ? lookAndFeel : info.getClassName();
 
-			try {
-				UIManager.setLookAndFeel(className);
-			}
-			catch (ClassNotFoundException | InstantiationException
-					| IllegalAccessException | UnsupportedLookAndFeelException exc)
-			{
-				attemptToRecover();
-				throw new IllegalArgumentException(//
-					"Invalid look and feel: " + lookAndFeel, exc);
-			}
-		}
+		// 	try {
+		// 		UIManager.setLookAndFeel(className);
+		// 	}
+		// 	catch (ClassNotFoundException | InstantiationException
+		// 			| IllegalAccessException | UnsupportedLookAndFeelException exc)
+		// 	{
+		// 		attemptToRecover();
+		// 		throw new IllegalArgumentException(//
+		// 			"Invalid look and feel: " + lookAndFeel, exc);
+		// 	}
+		// }
 
 		// Update all existing Swing windows to the new L+F.
-		FlatLaf.updateUI();
+
+		try {
+			UIManager.setLookAndFeel(MaterialLookAndFeel.class.getName());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+
+		}
 
 		// Persist L+F setting for next time.
 		if (prefs != null) prefs.put(getClass(), LAF_PREF_KEY, lookAndFeel);
