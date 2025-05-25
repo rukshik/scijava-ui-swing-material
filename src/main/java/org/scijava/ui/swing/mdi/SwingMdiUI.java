@@ -58,6 +58,7 @@ import org.scijava.ui.swing.mdi.viewer.SwingMdiDisplayWindow;
  * 
  * @author Grant Harris
  * @author Curtis Rueden
+ * Priority HIGH to pick this oen first
  */
 @Plugin(type = UserInterface.class, name = SwingMdiUI.NAME,
 	priority = Priority.HIGH)
@@ -108,7 +109,6 @@ public class SwingMdiUI extends AbstractSwingUI {
 
 	@Override
 	protected void setupAppFrame() {
-		System.out.println("Local UI called");
 		final SwingApplicationFrame appFrame = getApplicationFrame();
 		desktopPane = new JMDIDesktopPane();
 		// TODO desktopPane.setTransferHandler(new DropFileTransferHandler());

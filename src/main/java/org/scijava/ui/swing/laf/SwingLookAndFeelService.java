@@ -43,6 +43,8 @@ import java.util.function.Supplier;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+
+// Materiral look and feel
 import mdlaf.MaterialLookAndFeel;
 
 import org.scijava.log.LogService;
@@ -109,38 +111,7 @@ public class SwingLookAndFeelService extends AbstractService implements
 	public void setLookAndFeel(final String lookAndFeel) {
 		if (factories == null) initFactories();
 
-		// if (factories.containsKey(lookAndFeel)) {
-		// 	// This L+F has a dedicated factory.
-		// 	final LookAndFeel laf = factories.get(lookAndFeel).get();
-		// 	try {
-		// 		UIManager.setLookAndFeel(laf);
-		// 	}
-		// 	catch (final UnsupportedLookAndFeelException exc) {
-		// 		attemptToRecover();
-		// 		throw new IllegalArgumentException(//
-		// 			"Invalid look and feel: " + lookAndFeel, exc);
-		// 	}
-		// }
-		// else {
-		// 	// No dedicated factory; check for a registered L+F with a matching name.
-		// 	final LookAndFeelInfo info = getLookAndFeel(lookAndFeel);
-
-		// 	// If a L+F was found, use it; otherwise assume the argument is a class.
-		// 	final String className = info == null ? lookAndFeel : info.getClassName();
-
-		// 	try {
-		// 		UIManager.setLookAndFeel(className);
-		// 	}
-		// 	catch (ClassNotFoundException | InstantiationException
-		// 			| IllegalAccessException | UnsupportedLookAndFeelException exc)
-		// 	{
-		// 		attemptToRecover();
-		// 		throw new IllegalArgumentException(//
-		// 			"Invalid look and feel: " + lookAndFeel, exc);
-		// 	}
-		// }
-
-		// Update all existing Swing windows to the new L+F.
+		// Update all existing Swing windows to material look and feel RUKSHIK
 
 		try {
 			UIManager.setLookAndFeel(MaterialLookAndFeel.class.getName());

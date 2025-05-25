@@ -29,11 +29,7 @@
 
  package org.scijava.ui.swing;
 
- import java.awt.Color;
- import java.awt.Graphics;
- import java.awt.Graphics2D;
- import java.awt.Image;
- import java.awt.RenderingHints;
+
  import java.awt.event.MouseAdapter;
  import java.awt.event.MouseEvent;
  import java.net.URL;
@@ -42,16 +38,9 @@
  
  import javax.swing.AbstractButton;
  import javax.swing.ButtonGroup;
- import javax.swing.GrayFilter;
  import javax.swing.ImageIcon;
  import javax.swing.JToggleButton;
  import javax.swing.JToolBar;
- import javax.swing.UIManager;
- import javax.swing.border.EmptyBorder;
- import javax.swing.event.ChangeListener;
- import javax.swing.border.CompoundBorder;
- import javax.swing.border.MatteBorder;
- import javax.swing.ToolTipManager;
  
  import org.scijava.Context;
  import org.scijava.InstantiableException;
@@ -67,6 +56,21 @@
  import org.scijava.ui.ToolBar;
  import org.scijava.ui.UIService;
  
+ // imports needed to change UI - RUKSHIK
+ import java.awt.Color;
+ import java.awt.Graphics;
+ import java.awt.Graphics2D;
+ import java.awt.Image;
+ import java.awt.RenderingHints;
+ import javax.swing.GrayFilter;
+ import javax.swing.UIManager;
+ import javax.swing.border.EmptyBorder;
+ import javax.swing.event.ChangeListener;
+ import javax.swing.border.CompoundBorder;
+ import javax.swing.border.MatteBorder;
+ import javax.swing.ToolTipManager;
+
+
  /**
   * Button bar with selectable tools, styled Material‑UI–like.
   * 
@@ -74,6 +78,7 @@
   */
  public class SwingToolBar extends JToolBar implements ToolBar {
  
+	/* update colors and background of toolbar buttons look material ui RUKSHIK */
 	 static {
 		 UIManager.put("ToolTip.background", UIManager.getColor("Button.disabledBackground"));
 		 UIManager.put("ToolTip.foreground", new Color(64, 64, 64)); // darker text
@@ -81,6 +86,7 @@
 	 }
  
 	 private final Map<String, AbstractButton> toolButtons;
+
 	 private final ButtonGroup buttonGroup = new ButtonGroup();
  
 	 @Parameter
@@ -100,6 +106,7 @@
  
 	 public SwingToolBar(final Context context) {
 		 context.inject(this);
+		 
 		 toolButtons = new HashMap<>();
 		 populateToolBar();
 	 }
@@ -127,7 +134,7 @@
 	 private AbstractButton createButton(final Tool tool, boolean active)
 		 throws InstantiableException
 	 {
-		 // Inner class for Material‑style JToggleButton with hover support only
+		 // Style swing button to have Material look RUKSHIK
 		 class MaterialToggleButton extends JToggleButton {
 			 MaterialToggleButton() { super(); }
  
@@ -151,9 +158,10 @@
 		 final boolean enabled = info.isEnabled();
 		 final boolean visible = info.isVisible();
  
+		 // Use material button instead of stanard swing button RUKSHIK
 		 final MaterialToggleButton button = new MaterialToggleButton();
  
-		 // Icon or text
+		 // set icon
 		 if (iconURL == null) {
 			 button.setText(name);
 			 log.warn("Invalid icon for tool: " + tool);
@@ -173,16 +181,16 @@
 		 ToolTipManager.sharedInstance().registerComponent(button);
 		 buttonGroup.add(button);
  
-		 // Styling
+		 // Material Styling RUKSHIK
 		 button.setFocusPainted(false);
 		 button.setContentAreaFilled(false);
 		 button.setOpaque(true);
-		 // Subtle vertical separator on the right
+		 // vertical separator bewtween buttons RUKSHIK
 		 MatteBorder sep = new MatteBorder(0, 0, 0, 1, new Color(0, 0, 0, 30)); 
 		 CompoundBorder cb = new CompoundBorder(sep, new EmptyBorder(8, 16, 8, 15));
 		 button.setBorder(cb);
 		 button.setFont(UIManager.getFont("ToggleButton.font"));
-		 // Use custom light gray-blue for background
+		 // light gray-blue for background RUKSHIK
 		 Color customBg = new Color(0xC6CDD1);
 		 Color menuSelBg = UIManager.getColor("Menu.selectionBackground").brighter();
 		 button.setBackground(customBg);
@@ -191,7 +199,7 @@
 			 button.setBackground(button.isSelected() ? menuSelBg : customBg);
 		 });
  
-		 // Description on hover
+		 // Description on hover RUKSHIK
 		 button.addMouseListener(new MouseAdapter() {
 			 @Override public void mouseEntered(MouseEvent e) {
 				 statusService.showStatus(tool.getDescription());
@@ -201,15 +209,13 @@
 			 }
 		 });
  
-		 // Hover background only
-		 button.addMouseListener(new MouseAdapter() {
-			 @Override public void mouseEntered(MouseEvent e) {
-				 // Removed hover background change, background is now single source of truth
-			 }
-			 @Override public void mouseExited(MouseEvent e) {
-				 // Removed hover background change, background is now single source of truth
-			 }
-		 });
+		//  // Hover background RUKSHIK
+		//  button.addMouseListener(new MouseAdapter() {
+		// 	 @Override public void mouseEntered(MouseEvent e) {
+		// 	 }
+		// 	 @Override public void mouseExited(MouseEvent e) {
+		// 	 }
+		//  });
  
 		 // Activate tool on selection change
 		 button.addChangeListener(e -> {
