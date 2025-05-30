@@ -9,6 +9,7 @@
 		<relativePath />
 	</parent>
 
+	<!-- Override the version RUKSHIK -->
 	<artifactId>scijava-ui-swing</artifactId>
 	<version>1.0.4</version>
 
@@ -176,6 +177,12 @@
 			<groupId>net.sourceforge.jdatepicker</groupId>
 			<artifactId>jdatepicker</artifactId>
 			<version>${jdatepicker.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij</artifactId>
+			<version>1.53g</version>
 		</dependency>
 
 		<!-- Test scope dependencies -->

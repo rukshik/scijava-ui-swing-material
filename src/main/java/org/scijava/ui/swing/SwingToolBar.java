@@ -70,6 +70,7 @@
  import javax.swing.border.MatteBorder;
  import javax.swing.ToolTipManager;
 
+ import ij.IJ;
 
  /**
   * Button bar with selectable tools, styled Material‑UI–like.
@@ -116,18 +117,23 @@
 	 private void populateToolBar() {
 		 final Tool activeTool = toolService.getActiveTool();
 		 Tool lastTool = null;
-		 for (final Tool tool : toolService.getTools()) {
-			 try {
-				 final AbstractButton button = createButton(tool, tool == activeTool);
-				 toolButtons.put(tool.getInfo().getName(), button);
-				 iconService.registerButton(tool, button);
-				 if (toolService.isSeparatorNeeded(tool, lastTool)) addSeparator();
-				 lastTool = tool;
-				 add(button);
-			 }
-			 catch (final InstantiableException e) {
-				 log.warn("Invalid tool: " + tool.getInfo(), e);
-			 }
+		for (final Tool tool : toolService.getTools()) {
+			String name = tool.getInfo().getName();
+
+			if (name.equals("Foreground") || name.equals("Background")) {
+			continue;
+			}
+			try {
+				final AbstractButton button = createButton(tool, tool == activeTool);
+				toolButtons.put(tool.getInfo().getName(), button);
+				iconService.registerButton(tool, button);
+				if (toolService.isSeparatorNeeded(tool, lastTool)) addSeparator();
+				lastTool = tool;
+				add(button);
+			}
+			catch (final InstantiableException e) {
+				log.warn("Invalid tool: " + tool.getInfo(), e);
+			}
 		 }
 	 }
  
@@ -218,11 +224,15 @@
 		//  });
  
 		 // Activate tool on selection change
-		 button.addChangeListener(e -> {
-			 if (button.isSelected()) {
-				 toolService.setActiveTool(tool);
-			 }
-		 });
+		//  button.addChangeListener(e -> {
+		// 	 if (button.isSelected()) {
+		// 		 toolService.setActiveTool(tool);
+		// 	 }
+		//  });
+
+		 button.addActionListener(e -> {
+			toolService.setActiveTool(tool);
+		});
  
 		 // Initial state
 		 button.setSelected(active);
@@ -237,6 +247,12 @@
 	 @EventHandler
 	 protected void onEvent(final ToolActivatedEvent event) {
 		 String name = event.getTool().getInfo().getName();
+		 if (name.equals("Paintbrush")) { 
+		 	IJ.setTool(16);
+		 }
+		 else {
+			IJ.setTool(name);
+		 }
 		 AbstractButton btn = toolButtons.get(name);
 		 if (btn != null) btn.setSelected(true);
 	 }
@@ -247,4 +263,4 @@
 		 AbstractButton btn = toolButtons.get(name);
 		 if (btn != null) btn.setSelected(false);
 	 }
- }
+}
